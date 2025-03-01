@@ -1,4 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+# Address Similarity Checker
+
+This project uses Google's Gemini AI to compare two addresses and determine if they refer to the same location. It returns a **match status (true/false)** and a **confidence score (0-100)** indicating how similar the addresses are.
+
+## 🚀 Features
+
+- **Direct Match Detection:** If addresses are exactly the same, it returns `match: true, confidence: 100`.
+- **Smart Address Comparison:** Uses AI to handle minor differences like abbreviations, missing words, or different formats.
+- **Neighborhood-Level Analysis:** Can determine if two addresses are close to each other (same area but different exact locations).
+- **Optimized for Efficiency:** If the addresses are identical, it skips the AI call to save resources.
+
+---
+
+## 📌 How It Works
+
+1. **Standardizes Addresses:** Converts both addresses to lowercase and trims extra spaces.
+2. **Direct Match Check:** If both addresses are the same, it returns `{ "match": true, "confidence": 100 }` immediately.
+3. **AI-Based Comparison:** If addresses differ, it uses **Google's Gemini AI** to analyze their similarity based on:
+   - Identical addresses → **`confidence: 100`**
+   - Minor differences (abbreviations, formatting) → **`confidence: 90-99`**
+   - Nearby locations (same neighborhood) → **`confidence: 70-89`**
+   - Different cities → **`confidence: 90-100`**
+4. **Returns a JSON Response:** AI generates a structured response with `match` and `confidence`.
+
+---
+
+## 🔥 API Usage
+
+### **📌 Endpoint:**  
+`POST /api/compare-addresses`
+
+### **👥 Request Body (JSON)**
+```json
+{
+  "address1": "Connaught Place, Delhi",
+  "address2": "Rajiv Chowk Metro, Delhi"
+}
+```
+
+### **📤 Response Example**
+```json
+{
+  "match": false,
+  "confidence": 75
+}
+```
+
+### **Other Examples**
+
+| Address 1 | Address 2 | Match | Confidence |
+|-----------|----------|--------|------------|
+| "1600 Amphitheatre Parkway, Mountain View, CA" | "Googleplex, 1600 Amphitheatre Pkwy, Mountain View, CA" | `true` | `95-99` |
+| "Connaught Place, Delhi" | "Rajiv Chowk Metro, Delhi" | `false` | `75-85` |
+| "450 Serra Mall, Stanford, CA" | "250 Hamilton Ave, Palo Alto, CA" | `false` | `90-100` |
+
+---
+
+## 📊 How Confidence is Calculated
+
+| Confidence Score | Meaning |
+|-----------------|---------|
+| **100** | Addresses are **identical**. |
+| **90-99** | Addresses refer to the **same place with slight differences** (e.g., abbreviations, missing words). |
+| **70-89** | Addresses are in the **same area/neighborhood** but not exactly the same location. |
+| **90-100** | Addresses are **in different cities or far apart**. |
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Getting Started
 
